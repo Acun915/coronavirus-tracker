@@ -23,21 +23,27 @@ public class CoronaVirusDataService {
     private List<LocationStats> allStats = new ArrayList<>();
 
     public void fetchVirusData() throws IOException, InterruptedException {
+        List<LocationStats> newStats = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(VIRUS_DATA_URL))
                 .build();
         HttpResponse<String> httpResponse;
 
-         httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         Reader csvBodyReader = new StringReader(httpResponse.body());
 
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
         for (CSVRecord record : records) {
-            String state = record.get("Province/State");
-            System.out.println(state);
+            LocationStats locationStats = new LocationStats();
+            locationStats.setState(record.get("Province/State"));
+            locationStats.setCountry(record.get("Country/Region"));
+            locationStats.setLatestTotalCases(Integer.parseInt(record.get(record.size()-1)));
+            System.out.println(locationStats);
+            newStats.add(locationStats);
         }
+        this.allStats = newStats;
         csvBodyReader.close();
     }
 

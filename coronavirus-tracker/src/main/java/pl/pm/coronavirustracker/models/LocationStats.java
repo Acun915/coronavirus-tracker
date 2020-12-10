@@ -9,23 +9,32 @@ public class LocationStats {
         return state;
     }
 
-    void setState(String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    String getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    void setCountry(String country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    int getLatestTotalCases() {
+    public int getLatestTotalCases() {
         return latestTotalCases;
     }
 
-    void setLatestTotalCases(int latestTotalCases) {
+    public void setLatestTotalCases(int latestTotalCases) {
         this.latestTotalCases = latestTotalCases;
+    }
+
+    @Override
+    public String toString() {
+        return "LocationStats{" +
+                "state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", latestTotalCases=" + latestTotalCases +
+                '}';
     }
 }
