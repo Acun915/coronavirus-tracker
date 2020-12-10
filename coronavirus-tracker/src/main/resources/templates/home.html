@@ -18,12 +18,14 @@
                     <th>State</th>
                     <th>Country</th>
                     <th>Total Cases Reported</th>
+                    <th>Changed from yesterday</th>
                 </tr>
                 <th:block th:each="locationStat : ${locationStats}">
                     <tr>
                         <td th:text="${locationStat.getState()}"></td>
                         <td th:text="${locationStat.getCountry()}"></td>
                         <td th:text="${locationStat.getLatestTotalCases()}"></td>
+                        <td th:text="'+' + ${locationStat.getDifferenceFromPreviousDay()}"></td>
                     </tr>
                 </th:block>
             </table>
