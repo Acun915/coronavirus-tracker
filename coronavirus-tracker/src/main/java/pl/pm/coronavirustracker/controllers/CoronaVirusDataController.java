@@ -1,6 +1,8 @@
 package pl.pm.coronavirustracker.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 import pl.pm.coronavirustracker.services.CoronaVirusDataService;
 
@@ -18,6 +20,7 @@ public class CoronaVirusDataController {
     }
 
     @PostConstruct
+    @Scheduled(cron = "* * 1 * * *")
     public void printDataToConsole() throws IOException, InterruptedException {
         coronaVirusDataService.fetchVirusData();
     }
