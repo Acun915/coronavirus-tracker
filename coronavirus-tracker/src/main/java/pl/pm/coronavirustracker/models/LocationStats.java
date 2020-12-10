@@ -5,7 +5,7 @@ public class LocationStats {
     private String country;
     private int latestTotalCases;
 
-    String getState() {
+    public String getState() {
         return state;
     }
 
