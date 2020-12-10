@@ -12,20 +12,23 @@
             <p class="lead">Total cases reported as of today</p>
 
         </div>
-        <table>
-            <tr>
-                <th>State</th>
-                <th>Country</th>
-                <th>Total Cases Reported</th>
-            </tr>
-            <th:block th:each="locationStat : ${locationStats}">
+        <div class="container">
+            <table>
                 <tr>
-                    <td th:text="${locationStat.getState()}"></td>
-                    <td th:text="${locationStat.getCountry()}"></td>
-                    <td th:text="${locationStat.getLatestTotalCases()}"></td>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Total Cases Reported</th>
                 </tr>
-            </th:block>
-        </table>
+                <th:block th:each="locationStat : ${locationStats}">
+                    <tr>
+                        <td th:text="${locationStat.getState()}"></td>
+                        <td th:text="${locationStat.getCountry()}"></td>
+                        <td th:text="${locationStat.getLatestTotalCases()}"></td>
+                    </tr>
+                </th:block>
+            </table>
+        </div>
+
 
     </body>
     </html>

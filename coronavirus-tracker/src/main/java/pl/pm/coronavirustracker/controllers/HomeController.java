@@ -22,10 +22,11 @@
         @GetMapping("/")
         public String home(Model model) {
             List<LocationStats> allStats = coronaVirusDataService.getAllStats();
-            model.addAttribute("locationStats",allStats);
-            model.addAttribute("totalReportedCases", allStats.stream()
+            int totalReportedCases = allStats.stream()
                     .mapToInt(locationStat -> locationStat.getLatestTotalCases())
-                    .sum());
+                    .sum();
+            model.addAttribute("locationStats",allStats);
+            model.addAttribute("totalReportedCases", totalReportedCases);
             return "home";
         }
 
