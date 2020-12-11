@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import pl.pm.coronavirustracker.models.LocationStats;
 
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -18,27 +19,25 @@ import java.util.List;
 @Service
 public class CoronaVirusDataService {
 
-    private static String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    private static final String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
-    private List<LocationStats> allStats = new ArrayList<>();
 
-    public List<LocationStats> getAllStats() {
-        return allStats;
-    }
-
-    public void fetchVirusData() throws IOException, InterruptedException {
-        List<LocationStats> newStats = new ArrayList<>();
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(VIRUS_DATA_URL))
+    private HttpRequest buildHttpRequest(String url) {
+        return HttpRequest.newBuilder()
+                .uri(URI.create(url))
                 .build();
-        HttpResponse<String> httpResponse;
+    }
+    private HttpResponse<String> getResponse(HttpRequest request) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+    private Reader createReader(HttpResponse<String> response) {
+        return new StringReader(response.body());
+    }
+    public List<LocationStats> fetchVirusData() throws IOException, InterruptedException {
+        List<LocationStats> newStats = new ArrayList<>();
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(createReader(getResponse(buildHttpRequest(VIRUS_DATA_URL))));
 
-        httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        Reader csvBodyReader = new StringReader(httpResponse.body());
-
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
         for (CSVRecord record : records) {
             LocationStats locationStats = new LocationStats();
             int totalCasesReported = Integer.parseInt(record.get(record.size()-1));
@@ -47,11 +46,10 @@ public class CoronaVirusDataService {
             locationStats.setCountry(record.get("Country/Region"));
             locationStats.setLatestTotalCases(totalCasesReported);
             locationStats.setDifferenceFromPreviousDay(totalCasesReported-previousDayTotalCasesReported);
-            System.out.println(locationStats);
             newStats.add(locationStats);
         }
-        this.allStats = newStats;
-        csvBodyReader.close();
+        return newStats;
     }
+
 
 }

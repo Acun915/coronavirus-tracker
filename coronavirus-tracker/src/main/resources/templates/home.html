@@ -10,19 +10,19 @@
         <div class="container">
             <h1>Corona Virus Tracker</h1>
 
-            <div class="jumbotron">
-                <div class="display-4">
-                    <h1 class="display-4" th:text="${totalReportedCases}"></h1>
-                    <p class="lead">Total cases reported as of today</p>
-                </div>
+            <div class="d-flex justify-content-between">
+                    <div class="p-2">
+                        <h1 class="display-4" th:text="${totalReportedCases}"></h1>
+                        <p class="lead">Total cases reported as of today</p>
+                    </div>
 
-                <div class="display-4">
-                    <h2 class="display-4" th:text="${totalNewCases}"></h2>
-                    <p>New cases yesterday</p>
-                </div>
+                    <div class="p-2">
+                        <h2 class="display-4" th:text="${totalNewCases}"></h2>
+                        <p>New cases yesterday</p>
+                    </div>
             </div>
 
-            <table class="table table-dark">
+            <table class="table">
 
                 <tr>
                     <th>State</th>

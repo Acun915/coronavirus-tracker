@@ -7,6 +7,7 @@
     import pl.pm.coronavirustracker.models.LocationStats;
     import pl.pm.coronavirustracker.services.CoronaVirusDataService;
 
+    import java.io.IOException;
     import java.util.List;
 
     @Controller
@@ -20,8 +21,8 @@
         }
 
         @GetMapping("/")
-        public String home(Model model) {
-            List<LocationStats> allStats = coronaVirusDataService.getAllStats();
+        public String home(Model model) throws IOException, InterruptedException {
+            List<LocationStats> allStats = coronaVirusDataService.fetchVirusData();
             int totalReportedCases = allStats.stream()
                     .mapToInt(locationStat -> locationStat.getLatestTotalCases())
                     .sum();
