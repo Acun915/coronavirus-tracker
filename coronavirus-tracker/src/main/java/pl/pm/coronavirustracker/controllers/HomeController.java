@@ -25,8 +25,12 @@
             int totalReportedCases = allStats.stream()
                     .mapToInt(locationStat -> locationStat.getLatestTotalCases())
                     .sum();
+            int totalNewCases = allStats.stream()
+                    .mapToInt(locationStat -> locationStat.getDifferenceFromPreviousDay())
+                    .sum();
             model.addAttribute("locationStats",allStats);
             model.addAttribute("totalReportedCases", totalReportedCases);
+            model.addAttribute("totalNewCases", totalNewCases);
             return "home";
         }
 

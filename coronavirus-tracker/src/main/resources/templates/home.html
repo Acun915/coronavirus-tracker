@@ -6,20 +6,31 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     </head>
     <body>
-        <h1>Corona Virus Tracker</h1>
-        <div class="jumbotron">
-            <h1 class="display-4" th:text="${totalReportedCases}"></h1>
-            <p class="lead">Total cases reported as of today</p>
 
-        </div>
         <div class="container">
-            <table>
+            <h1>Corona Virus Tracker</h1>
+
+            <div class="jumbotron">
+                <div class="display-4">
+                    <h1 class="display-4" th:text="${totalReportedCases}"></h1>
+                    <p class="lead">Total cases reported as of today</p>
+                </div>
+
+                <div class="display-4">
+                    <h2 class="display-4" th:text="${totalNewCases}"></h2>
+                    <p>New cases yesterday</p>
+                </div>
+            </div>
+
+            <table class="table table-dark">
+
                 <tr>
                     <th>State</th>
                     <th>Country</th>
                     <th>Total Cases Reported</th>
                     <th>Changed from yesterday</th>
                 </tr>
+
                 <th:block th:each="locationStat : ${locationStats}">
                     <tr>
                         <td th:text="${locationStat.getState()}"></td>
@@ -28,6 +39,7 @@
                         <td th:text="'+' + ${locationStat.getDifferenceFromPreviousDay()}"></td>
                     </tr>
                 </th:block>
+
             </table>
         </div>
 
